@@ -1,7 +1,18 @@
+import Categories from "@/components/home/Categories"
+import FeaturedProducts from "@/components/home/FeaturedProducts"
+import Hero from "@/components/home/Hero"
+import Newsletter from "@/components/home/Newsletter"
+import WhyChooseShopNest from "@/components/home/WhyChooseShopNest"
 
 const HomePage = () => {
   return (
-    <div className="min-h-[80vh] bg-white text-black dark:bg-gray-950 dark:text-white">Home Page</div>
+    <div>
+      <Hero />
+      <Categories/>
+      <FeaturedProducts />
+      <WhyChooseShopNest/>
+      <Newsletter/>
+    </div>
   )
 }
 

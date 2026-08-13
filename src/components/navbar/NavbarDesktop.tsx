@@ -1,33 +1,43 @@
 "use client";
 
 import Link from "next/link";
-import {
-  ChevronDown,
-  Heart,
-  Menu,
-  Search,
-  ShoppingCart,
-  UserRound,
-} from "lucide-react";
-import { useState } from "react";
+import { ChevronDown, Heart, Menu, Search, ShoppingCart } from "lucide-react";
+import { useEffect, useState } from "react";
 import type { StoreConfig, NavItem } from "./Navbar";
 import ThemeToggle from "../ui/ThemeToggle";
 import Image from "next/image";
+import UserMenu from "./UserMenu";
+import { apiFetch } from "@/lib/apiClient";
+import type { Cart } from "@/types/product";
+import { getCart } from "@/lib/cartService";
 
 interface NavbarDesktopProps {
   store: StoreConfig;
   onMobileOpen: () => void;
 }
 
-const NavbarDesktop = ({
-  store,
-  onMobileOpen,
-}: NavbarDesktopProps) => {
-  const [searchOpen, setSearchOpen] = useState(false);
+const NavbarDesktop = ({ store, onMobileOpen }: NavbarDesktopProps) => {
+  const [searchOpen] = useState(false);
+  const [cart, setCart] = useState<Cart | null>(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await getCart();
+
+        setCart(data);
+      } catch (error) {
+        console.error("Failed to fetch cart:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const totalAdded = cart?.items?.length ?? 0;
 
   return (
     <div className="mx-auto flex h-16 max-w-7xl items-center gap-6 px-4">
-
       {/* Mobile Menu */}
       <button
         onClick={onMobileOpen}
@@ -36,7 +46,7 @@ const NavbarDesktop = ({
           text-black dark:text-white
           transition
           hover:bg-black/5 dark:hover:bg-white/10
-          md:hidden
+          lg:hidden
         "
         aria-label="Open menu"
       >
@@ -44,10 +54,7 @@ const NavbarDesktop = ({
       </button>
 
       {/* Logo */}
-      <Link
-        href="/"
-        className="flex shrink-0 items-center gap-2"
-      >
+      <Link href="/" className="flex shrink-0 items-center gap-2">
         {store.logo ? (
           <Image
             src={store.logo}
@@ -74,7 +81,7 @@ const NavbarDesktop = ({
           className="
             hidden text-xl font-bold tracking-tight
             text-black dark:text-white
-            sm:block
+            md:block
           "
         >
           {store.name}
@@ -82,32 +89,15 @@ const NavbarDesktop = ({
       </Link>
 
       {/* Navigation */}
-      <nav className="hidden flex-1 items-center justify-center gap-1 md:flex">
+      <nav className="hidden flex-1 items-center justify-center gap-1 lg:flex">
         {store.navigation.map((item) => (
-          <NavLink
-            key={item._id}
-            item={item}
-          />
+          <NavLink key={item._id} item={item} />
         ))}
       </nav>
 
       {/* Actions */}
       <div className="ml-auto flex items-center gap-1">
-
         {/* Search */}
-        <button
-          onClick={() => setSearchOpen((prev) => !prev)}
-          className="
-            rounded-lg p-2.5
-            text-black dark:text-white
-            transition
-            hover:bg-black/5
-            dark:hover:bg-white/10
-          "
-          aria-label="Search"
-        >
-          <Search className="h-5 w-5" />
-        </button>
 
         {/* Wishlist */}
         <Link
@@ -126,20 +116,7 @@ const NavbarDesktop = ({
         </Link>
 
         {/* Account */}
-        <Link
-          href="/account"
-          className="
-            hidden rounded-lg p-2.5
-            text-black dark:text-white
-            transition
-            hover:bg-black/5
-            dark:hover:bg-white/10
-            sm:block
-          "
-          aria-label="Account"
-        >
-          <UserRound className="h-5 w-5" />
-        </Link>
+        <UserMenu />
 
         {/* Cart */}
         <Link
@@ -166,7 +143,7 @@ const NavbarDesktop = ({
               px-1 text-[10px] font-bold
             "
           >
-            0
+            {totalAdded}
           </span>
         </Link>
 
@@ -185,7 +162,12 @@ const NavbarDesktop = ({
             p-4
             shadow-lg
             backdrop-blur-xl
-            md:hidden
+            md:left-auto
+    md:right-4
+    md:w-96
+    md:rounded-xl
+    md:border
+            
           "
         >
           <form
@@ -248,11 +230,7 @@ const NavbarDesktop = ({
   );
 };
 
-const NavLink = ({
-  item,
-}: {
-  item: NavItem;
-}) => {
+const NavLink = ({ item }: { item: NavItem }) => {
   const [open, setOpen] = useState(false);
 
   if (!item.children?.length) {
