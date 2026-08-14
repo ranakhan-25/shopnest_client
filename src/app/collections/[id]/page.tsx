@@ -14,11 +14,12 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useParams} from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import type { Product } from "@/types/product";
 import { apiFetch } from "@/lib/apiClient";
+import { useAuthStore } from "@/components/store/authStore";
 
 export default function ProductDetails() {
   const params = useParams();
@@ -31,9 +32,16 @@ export default function ProductDetails() {
   const [quantity, setQuantity] = useState(1);
   const [isWishlisted, setIsWishlisted] = useState(false);
   const [addedToCart, setAddedToCart] = useState(false);
+  const router = useRouter();
+  const { accessToken } = useAuthStore();
 
   useEffect(() => {
     if (!id) return;
+
+    if (!accessToken) {
+      router.replace("/unauthorized");
+      return;
+    }
 
     const fetchProductDetails = async () => {
       try {
@@ -113,6 +121,9 @@ export default function ProductDetails() {
       console.error("Wishlist error:", error);
     }
   };
+  if (!accessToken) {
+    return null;
+  }
 
   if (loading) {
     return (
