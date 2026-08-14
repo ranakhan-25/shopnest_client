@@ -37,8 +37,7 @@ export default function Hero() {
   }, []);
 
   return (
-    <section className="relative h-[600px] overflow-hidden sm:h-[650px]">
-       
+    <section className="relative h-[600px] overflow-hidden sm:h-[90vh]">
       <div
         className="flex h-full transition-transform duration-1000 ease-in-out"
         style={{
@@ -53,7 +52,6 @@ export default function Hero() {
               backgroundImage: `url(${banner.image})`,
             }}
           >
-
             <div className="absolute inset-0 dark:hidden" />
             <div className="absolute inset-0 hidden bg-black/65 dark:block" />
             <div className="absolute inset-0 bg-gradient-to-r from-white/60 via-white/20 to-transparent dark:hidden" />
@@ -62,7 +60,6 @@ export default function Hero() {
             {/* Content */}
             <div className="relative z-10 mx-auto flex h-full max-w-7xl items-center px-4 sm:px-6 lg:px-8">
               <div className="max-w-2xl">
-
                 {/* Badge */}
                 <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-gray-900/20 bg-white/70 px-4 py-2 text-sm text-gray-900 shadow-sm backdrop-blur-md dark:border-white/20 dark:bg-white/10 dark:text-white dark:shadow-none">
                   <ShoppingBag size={16} />
@@ -81,21 +78,19 @@ export default function Hero() {
 
                 {/* Description */}
                 <p className="mt-6 max-w-xl text-base leading-7 text-gray-800 sm:text-lg dark:text-gray-200">
-                  Explore our collection of quality products at amazing
-                  prices. Find everything you need in one place and enjoy a
-                  simple shopping experience.
+                  Explore our collection of quality products at amazing prices.
+                  Find everything you need in one place and enjoy a simple
+                  shopping experience.
                 </p>
 
                 {/* Buttons */}
                 <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-
                   {/* Primary */}
                   <Link
                     href="/products"
                     className="group inline-flex items-center justify-center gap-2 rounded-lg bg-white px-6 py-3 font-semibold text-black shadow-lg transition hover:bg-gray-200"
                   >
                     Shop Now
-
                     <ArrowRight
                       size={18}
                       className="transition-transform group-hover:translate-x-1"
