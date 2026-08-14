@@ -13,9 +13,12 @@ interface AuthStore {
   user: AuthUser | null;
   accessToken: string | null;
 
+  hasHydrated: boolean;
+
   setAuth: (user: AuthUser, accessToken: string) => void;
   setAccessToken: (accessToken: string) => void;
   logout: () => void;
+  setHasHydrated: (value: boolean) => void;
 }
 
 export const useAuthStore = create<AuthStore>()(
@@ -23,6 +26,8 @@ export const useAuthStore = create<AuthStore>()(
     (set) => ({
       user: null,
       accessToken: null,
+
+      hasHydrated: false,
 
       setAuth: (user, accessToken) =>
         set({
@@ -40,9 +45,20 @@ export const useAuthStore = create<AuthStore>()(
           user: null,
           accessToken: null,
         }),
+
+      setHasHydrated: (value) =>
+        set({
+          hasHydrated: value,
+        }),
     }),
     {
       name: "shopnest-auth",
+
+      onRehydrateStorage: () => {
+        return (state) => {
+          state?.setHasHydrated(true);
+        };
+      },
     }
   )
 );

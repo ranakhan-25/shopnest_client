@@ -7,6 +7,7 @@ import { ShoppingBag, Trash2, CreditCard, Package } from "lucide-react";
 import type { Cart, CartItem } from "@/types/product";
 import { getCart } from "@/lib/cartService";
 import { apiFetch } from "@/lib/apiClient";
+import { toast } from "react-toastify";
 
 const Cart = () => {
   const [cart, setCart] = useState<Cart | null>(null);
@@ -86,7 +87,7 @@ const Cart = () => {
       setCart(result.data);
 
       // Success message
-      alert(result.message || "Product removed successfully");
+      toast(result.message || "Product removed successfully");
     } catch (error) {
       console.error("Delete cart error:", error);
 

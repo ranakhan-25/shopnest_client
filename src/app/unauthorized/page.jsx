@@ -41,7 +41,7 @@ export default function Unauthorized() {
         <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3">
           {/* Login Button */}
           <Link
-            href="/login"
+            href="/auth/signin"
             className="flex w-full sm:w-auto items-center justify-center gap-2 rounded-xl bg-gray-950 px-6 py-3.5 text-sm font-semibold text-white shadow-md transition-all hover:bg-gray-800 dark:bg-white dark:text-gray-950 dark:hover:bg-gray-200"
           >
             <LogIn size={16} /> Login to Account

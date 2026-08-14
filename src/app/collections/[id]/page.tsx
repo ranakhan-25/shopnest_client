@@ -20,6 +20,7 @@ import { useEffect, useState } from "react";
 import type { Product } from "@/types/product";
 import { apiFetch } from "@/lib/apiClient";
 import { useAuthStore } from "@/components/store/authStore";
+import { toast } from "react-toastify";
 
 export default function ProductDetails() {
   const params = useParams();
@@ -33,10 +34,10 @@ export default function ProductDetails() {
   const [isWishlisted, setIsWishlisted] = useState(false);
   const [addedToCart, setAddedToCart] = useState(false);
   const router = useRouter();
-  const { accessToken } = useAuthStore();
+  const { accessToken, hasHydrated } = useAuthStore();
 
   useEffect(() => {
-    if (!id) return;
+    if (!id || !hasHydrated) return;
 
     if (!accessToken) {
       router.replace("/unauthorized");
@@ -47,6 +48,7 @@ export default function ProductDetails() {
       try {
         setLoading(true);
         setError(null);
+
         const res = await apiFetch(`/api/product/${id}`);
 
         if (!res.ok) {
@@ -54,6 +56,7 @@ export default function ProductDetails() {
         }
 
         const result = await res.json();
+
         setProduct(result?.data || result);
       } catch (err) {
         setError(err instanceof Error ? err.message : "Something went wrong");
@@ -63,7 +66,7 @@ export default function ProductDetails() {
     };
 
     fetchProductDetails();
-  }, [id]);
+  }, [id, accessToken, hasHydrated, router]);
 
   const handleQuantityChange = (type: "inc" | "dec") => {
     if (type === "inc") {
@@ -99,28 +102,48 @@ export default function ProductDetails() {
     } catch (error) {
       console.error("Add to cart error:", error);
 
-      alert(error instanceof Error ? error.message : "Something went wrong");
+      toast(error instanceof Error ? error.message : "Something went wrong");
     }
   };
 
-  const handleToggleWishlist = async (item: Product) => {
+  const handleWishlistToggle = async (item: Product) => {
     try {
-      const newWishlistState = !isWishlisted;
-      setIsWishlisted(newWishlistState);
+      const res = await apiFetch(
+        isWishlisted ? `/api/wishlist/${item._id}` : `/api/wishlist`,
+        {
+          method: isWishlisted ? "DELETE" : "POST",
+          body: isWishlisted
+            ? undefined
+            : JSON.stringify({
+                productId: item._id,
+              }),
+        },
+      );
 
-      const res = await apiFetch(`/api/wishlist/toggle`, {
-        method: "POST",
-        body: JSON.stringify({ productId: item._id }),
-      });
+      const result = await res.json();
 
       if (!res.ok) {
-        setIsWishlisted(!newWishlistState);
-        throw new Error("Failed to update wishlist");
+        throw new Error(result.message || "Wishlist action failed");
       }
+
+      setIsWishlisted((prev) => !prev);
+
+      toast(result.message);
     } catch (error) {
       console.error("Wishlist error:", error);
+
+      toast(error instanceof Error ? error.message : "Something went wrong");
     }
   };
+
+  if (!hasHydrated) {
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        <p>Checking authentication...</p>
+      </div>
+    );
+  }
+
   if (!accessToken) {
     return null;
   }
@@ -288,7 +311,7 @@ export default function ProductDetails() {
 
               {/* Wishlist Button (Replaced Buy Now) */}
               <button
-                onClick={() => handleToggleWishlist(product)}
+                onClick={() => handleWishlistToggle(product)}
                 className={`flex flex-1 items-center justify-center gap-2 rounded-xl py-4 text-sm font-semibold shadow-md transition-all ${
                   isWishlisted
                     ? "bg-red-500 text-white hover:bg-red-600 dark:bg-red-600 dark:hover:bg-red-700"
