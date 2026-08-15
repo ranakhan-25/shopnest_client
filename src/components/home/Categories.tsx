@@ -31,7 +31,7 @@ const categoryIcons = {
   default: Box,
 };
 
-// ক্যাটাগরি অনুযায়ী আলাদা ইমেজ যুক্ত করার ম্যাপিং
+
 const categoryImages: Record<string, string> = {
   watches: "https://images.unsplash.com/photo-1524805444758-089113d48a6d",
   bags: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62",
@@ -90,7 +90,7 @@ export default function Categories() {
 
         const result = await res.json();
 
-        const productList = result?.data?.products;
+        const productList = result?.data;
         setProducts(Array.isArray(productList) ? productList : []);
       } catch (error) {
         setError(

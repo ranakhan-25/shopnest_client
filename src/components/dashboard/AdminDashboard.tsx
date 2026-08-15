@@ -25,10 +25,6 @@ import {
 
 import { apiFetch } from "@/lib/apiClient";
 
-// =====================================================
-// TYPES
-// =====================================================
-
 interface UserGrowth {
   month: string;
   users: number;
@@ -61,10 +57,6 @@ interface PlatformStats {
   recentSignups: RecentSignup[];
 }
 
-// =====================================================
-// DEFAULT DATA
-// =====================================================
-
 const DEFAULT_DATA: PlatformStats = {
   totalUsers: 0,
   totalSellers: 0,
@@ -78,9 +70,9 @@ const DEFAULT_DATA: PlatformStats = {
   recentSignups: [],
 };
 
-// =====================================================
+
 // ROLE COLORS
-// =====================================================
+
 
 const ROLE_COLORS: Record<string, string> = {
   user: "#64748B",
@@ -653,10 +645,7 @@ const AdminDashboard = () => {
         </div>
       </div>
 
-      {/* =================================================
-          RECENT SIGNUPS
-      ================================================= */}
-
+    
       <div
         className="
           rounded-2xl
@@ -835,9 +824,6 @@ const AdminDashboard = () => {
   );
 };
 
-// =====================================================
-// STAT CARD
-// =====================================================
 
 interface StatCardProps {
   icon: React.ElementType;
@@ -920,9 +906,6 @@ const StatCard = ({ icon: Icon, label, value, href }: StatCardProps) => {
   );
 };
 
-// =====================================================
-// EMPTY CHART
-// =====================================================
 
 const EmptyChart = ({ label }: { label: string }) => {
   return (

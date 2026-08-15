@@ -12,6 +12,7 @@ const UserMenu = () => {
   const router = useRouter()
   const [open, setOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
+  const role = user?.role;
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -199,7 +200,7 @@ const UserMenu = () => {
             </Link>
 
             <Link
-              href="/dashboard"
+              href={`/dashboard/${role}`}
               onClick={() => setOpen(false)}
               className="
                 flex items-center gap-3

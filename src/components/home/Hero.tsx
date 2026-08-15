@@ -87,7 +87,7 @@ export default function Hero() {
                 <div className="mt-8 flex flex-col gap-3 sm:flex-row">
                   {/* Primary */}
                   <Link
-                    href="/products"
+                    href="/collections"
                     className="group inline-flex items-center justify-center gap-2 rounded-lg bg-white px-6 py-3 font-semibold text-black shadow-lg transition hover:bg-gray-200"
                   >
                     Shop Now
@@ -99,7 +99,7 @@ export default function Hero() {
 
                   {/* Secondary */}
                   <Link
-                    href="/products"
+                    href="/collections"
                     className="inline-flex items-center justify-center rounded-lg border border-gray-900/20 bg-white/70 px-6 py-3 font-semibold text-gray-900 backdrop-blur-md transition hover:bg-white/90 dark:border-white/30 dark:bg-white/10 dark:text-white dark:hover:bg-white/20"
                   >
                     Explore Products

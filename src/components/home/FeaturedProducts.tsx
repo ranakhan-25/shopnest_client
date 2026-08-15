@@ -21,7 +21,7 @@ export default function FeaturedProducts() {
         const data = await res.json();
 
         if (data.success) {
-          setProducts(data.data.products);
+          setProducts(data.data);
         } else {
           setError(data.message || "Failed to fetch products.");
         }

@@ -36,8 +36,8 @@ export default function ProductsPage() {
       const data = await res.json();
 
       if (data.success) {
-        setProducts(data.data.products);
-        setPagination(data.data.pagination);
+        setProducts(data.data);
+        setPagination(data.pagination);
       }
     } catch (error) {
       console.error("Failed to fetch products:", error);

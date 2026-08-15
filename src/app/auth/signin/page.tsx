@@ -12,6 +12,7 @@ const SignInPage = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const router = useRouter();
+  const { user } = useAuthStore();
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -31,7 +32,7 @@ const SignInPage = () => {
             "Content-Type": "application/json",
           },
           credentials: "include",
-          body: JSON.stringify({ email, password })
+          body: JSON.stringify({ email, password }),
         },
       );
 
@@ -44,7 +45,7 @@ const SignInPage = () => {
       useAuthStore.getState().setAuth(data.user, data.accessToken);
 
       alert("Sign in success:");
-      router.push("/");
+      router.push(`/dashboard`);
     } catch (error) {
       console.error("Sign in error:", error);
       setError(error instanceof Error ? error.message : "Something went wrong");
@@ -60,7 +61,6 @@ const SignInPage = () => {
   const handleFacebookSignIn = () => {
     console.log("Facebook Sign In");
   };
-
 
   return (
     <main className="min-h-[calc(100vh-4rem)] bg-white px-4 py-10 text-black transition-colors dark:bg-black dark:text-white sm:py-16">

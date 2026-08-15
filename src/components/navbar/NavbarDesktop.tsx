@@ -1,43 +1,71 @@
 "use client";
 
 import Link from "next/link";
-import { ChevronDown, Heart, Menu, Search, ShoppingCart } from "lucide-react";
+import {
+  ChevronDown,
+  Heart,
+  Menu,
+  Search,
+  ShoppingCart,
+} from "lucide-react";
 import { useEffect, useState } from "react";
 import type { StoreConfig, NavItem } from "./Navbar";
 import ThemeToggle from "../ui/ThemeToggle";
 import Image from "next/image";
 import UserMenu from "./UserMenu";
-import { apiFetch } from "@/lib/apiClient";
 import type { Cart } from "@/types/product";
 import { getCart } from "@/lib/cartService";
+import { useAuthStore } from "@/components/store/authStore";
 
 interface NavbarDesktopProps {
   store: StoreConfig;
   onMobileOpen: () => void;
 }
 
-const NavbarDesktop = ({ store, onMobileOpen }: NavbarDesktopProps) => {
+const NavbarDesktop = ({
+  store,
+  onMobileOpen,
+}: NavbarDesktopProps) => {
   const [searchOpen] = useState(false);
   const [cart, setCart] = useState<Cart | null>(null);
 
+  const { accessToken } = useAuthStore();
+
   useEffect(() => {
-    const fetchData = async () => {
+    if (!accessToken) {
+      return;
+    }
+
+    let cancelled = false;
+
+    const fetchCart = async () => {
       try {
         const data = await getCart();
 
-        setCart(data);
+        if (!cancelled) {
+          setCart(data);
+        }
       } catch (error) {
         console.error("Failed to fetch cart:", error);
+
+        if (!cancelled) {
+          setCart(null);
+        }
       }
     };
 
-    fetchData();
-  }, []);
+    fetchCart();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [accessToken]);
 
   const totalAdded = cart?.items?.length ?? 0;
 
   return (
     <div className="mx-auto flex h-16 max-w-7xl items-center gap-6 px-4">
+
       {/* Mobile Menu */}
       <button
         onClick={onMobileOpen}
@@ -54,7 +82,10 @@ const NavbarDesktop = ({ store, onMobileOpen }: NavbarDesktopProps) => {
       </button>
 
       {/* Logo */}
-      <Link href="/" className="flex shrink-0 items-center gap-2">
+      <Link
+        href="/"
+        className="flex shrink-0 items-center gap-2"
+      >
         {store.logo ? (
           <Image
             src={store.logo}
@@ -91,13 +122,15 @@ const NavbarDesktop = ({ store, onMobileOpen }: NavbarDesktopProps) => {
       {/* Navigation */}
       <nav className="hidden flex-1 items-center justify-center gap-1 lg:flex">
         {store.navigation.map((item) => (
-          <NavLink key={item._id} item={item} />
+          <NavLink
+            key={item._id}
+            item={item}
+          />
         ))}
       </nav>
 
       {/* Actions */}
       <div className="ml-auto flex items-center gap-1">
-        {/* Search */}
 
         {/* Wishlist */}
         <Link
@@ -132,19 +165,21 @@ const NavbarDesktop = ({ store, onMobileOpen }: NavbarDesktopProps) => {
         >
           <ShoppingCart className="h-5 w-5" />
 
-          <span
-            className="
-              absolute -right-0.5 -top-0.5
-              flex h-4 min-w-4
-              items-center justify-center
-              rounded-full
-              bg-black text-white
-              dark:bg-white dark:text-black
-              px-1 text-[10px] font-bold
-            "
-          >
-            {totalAdded}
-          </span>
+          {accessToken && (
+            <span
+              className="
+                absolute -right-0.5 -top-0.5
+                flex h-4 min-w-4
+                items-center justify-center
+                rounded-full
+                bg-black text-white
+                dark:bg-white dark:text-black
+                px-1 text-[10px] font-bold
+              "
+            >
+              {totalAdded}
+            </span>
+          )}
         </Link>
 
         {/* Theme */}
@@ -163,11 +198,10 @@ const NavbarDesktop = ({ store, onMobileOpen }: NavbarDesktopProps) => {
             shadow-lg
             backdrop-blur-xl
             md:left-auto
-    md:right-4
-    md:w-96
-    md:rounded-xl
-    md:border
-            
+            md:right-4
+            md:w-96
+            md:rounded-xl
+            md:border
           "
         >
           <form

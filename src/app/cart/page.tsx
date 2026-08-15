@@ -77,7 +77,7 @@ const Cart = () => {
       const res = await apiFetch(`/api/cart/delete/${productId}`, {
         method: "DELETE",
       });
-
+      
       const result = await res.json();
 
       if (!res.ok) {
