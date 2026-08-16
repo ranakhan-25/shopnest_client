@@ -104,7 +104,7 @@ export default function FlashDeals() {
             <motion.div
               key={product._id}
               whileHover={{ y: -6 }}
-              className="group relative overflow-hidden rounded-2xl border border-gray-200 bg-white p-5 shadow-sm transition-all duration-300 hover:shadow-xl dark:border-gray-800 dark:bg-gray-900"
+              className="group relative overflow-hidden rounded border border-gray-200 bg-white p-5 shadow-sm transition-all duration-300 hover:shadow-xl dark:border-gray-800 dark:bg-gray-900"
             >
               {/* Discount Badge */}
               <span className="absolute left-5 top-5 z-10 rounded-full bg-gray-900 px-3 py-1 text-[11px] font-semibold text-white dark:bg-white dark:text-gray-950">

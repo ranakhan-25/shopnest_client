@@ -8,9 +8,12 @@ import type { Cart, CartItem } from "@/types/product";
 import { getCart } from "@/lib/cartService";
 import { apiFetch } from "@/lib/apiClient";
 import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 
 const Cart = () => {
   const [cart, setCart] = useState<Cart | null>(null);
+  const router = useRouter()
+  const [buyingAll, setBuyingAll] = useState(false);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -99,9 +102,37 @@ const Cart = () => {
     }
   };
 
-  const handleBuyAll = () => {
-    console.log("Buy all:", cart.items);
-  };
+  const handleBuyAllNow = async () => {
+  try {
+    
+    setBuyingAll(true);
+
+    const res = await apiFetch("/api/orders/buy-all", {
+      method: "POST",
+    });
+
+    const result = await res.json();
+
+    if (!res.ok) {
+      throw new Error(
+        result.message || "Failed to create order"
+      );
+    }
+
+    router.push(`/orders/success/${result.data._id}`);
+
+  } catch (error) {
+    console.error("Buy all error:", error);
+
+    toast(
+      error instanceof Error
+        ? error.message
+        : "Something went wrong"
+    );
+  } finally {
+    setBuyingAll(false);
+  }
+};
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8">
@@ -257,7 +288,7 @@ const Cart = () => {
 
             {/* Buy All */}
             <button
-              onClick={handleBuyAll}
+              onClick={handleBuyAllNow}
               className="mt-6 flex w-full items-center justify-center gap-2 rounded-xl bg-gray-900 px-5 py-3 font-semibold text-white transition hover:bg-gray-700 dark:bg-white dark:text-gray-900 dark:hover:bg-gray-200"
             >
               <CreditCard size={18} />

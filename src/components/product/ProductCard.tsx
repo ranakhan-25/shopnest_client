@@ -28,7 +28,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
   return (
     <article
       className="
-        group overflow-hidden rounded-2xl
+        group overflow-hidden rounded
         border border-slate-200
         bg-white
         transition-all duration-300

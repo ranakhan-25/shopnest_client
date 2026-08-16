@@ -18,7 +18,7 @@ const DashboardPage = () => {
 
   return (
     <main className="mx-auto w-full max-w-7xl ">
-      <UserDashboard />;
+      <UserDashboard />
     </main>
   );
 };

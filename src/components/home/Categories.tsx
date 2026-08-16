@@ -212,7 +212,7 @@ export default function Categories() {
               <Link
                 key={category}
                 href={`/collections?category=${encodeURIComponent(category)}`}
-                className="group relative overflow-hidden rounded-2xl border border-gray-200 bg-white p-5 shadow-sm transition duration-300 hover:-translate-y-1 hover:border-gray-400 hover:shadow-xl dark:border-gray-800 dark:bg-gray-900 dark:hover:border-gray-600 sm:p-6"
+                className="group relative overflow-hidden rounded border border-gray-200 bg-white p-5 shadow-sm transition duration-300 hover:-translate-y-1 hover:border-gray-400 hover:shadow-xl dark:border-gray-800 dark:bg-gray-900 dark:hover:border-gray-600 sm:p-6"
               >
                 {/* Background Image with Overlay for Visual Depth */}
                 <div className="absolute inset-0 z-0 overflow-hidden opacity-15 transition-transform duration-500 group-hover:scale-110 dark:opacity-10">
@@ -226,7 +226,7 @@ export default function Categories() {
 
                 <div className="relative z-10">
                   {/* Icon */}
-                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gray-100 text-gray-900 shadow-sm transition duration-300 group-hover:scale-110 group-hover:bg-gray-900 group-hover:text-white dark:bg-gray-800 dark:text-gray-200 dark:group-hover:bg-white dark:group-hover:text-gray-950">
+                  <div className="flex h-12 w-12 items-center justify-center rounded bg-gray-100 text-gray-900 shadow-sm transition duration-300 group-hover:scale-110 group-hover:bg-gray-900 group-hover:text-white dark:bg-gray-800 dark:text-gray-200 dark:group-hover:bg-white dark:group-hover:text-gray-950">
                     <Icon size={24} />
                   </div>
 

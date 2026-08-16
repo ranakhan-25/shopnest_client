@@ -6,13 +6,13 @@ import { FormEvent, useState } from "react";
 import { FaFacebook } from "react-icons/fa";
 import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/components/store/authStore";
+import { toast } from "react-toastify";
 
 const SignInPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const router = useRouter();
-  const { user } = useAuthStore();
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -44,7 +44,7 @@ const SignInPage = () => {
 
       useAuthStore.getState().setAuth(data.user, data.accessToken);
 
-      alert("Sign in success:");
+      toast("Sign in success:");
       router.push(`/dashboard`);
     } catch (error) {
       console.error("Sign in error:", error);

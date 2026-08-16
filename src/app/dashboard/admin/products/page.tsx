@@ -558,11 +558,11 @@ export default function AdminProducts() {
 
           <div className="text-sm text-muted-foreground">
             Showing{" "}
-            <span className="font-medium text-foreground">
+            <span className="font-medium ">
               {(pagination.currentPage - 1) * pagination.limit + 1}
             </span>{" "}
             -
-            <span className="font-medium text-foreground">
+            <span className="font-medium ">
               {" "}
               {Math.min(
                 pagination.currentPage * pagination.limit,
@@ -570,7 +570,7 @@ export default function AdminProducts() {
               )}
             </span>{" "}
             of{" "}
-            <span className="font-medium text-foreground">
+            <span className="font-medium ">
               {pagination.totalProducts}
             </span>{" "}
             products
@@ -590,7 +590,7 @@ export default function AdminProducts() {
           border border-border
           px-3 py-2
           text-sm font-medium
-          text-foreground
+          
           transition
           hover:bg-muted
           disabled:cursor-not-allowed
@@ -626,8 +626,8 @@ export default function AdminProducts() {
 
                 ${
                   isActive
-                    ? "bg-primary text-primary-foreground"
-                    : "border border-border text-foreground hover:bg-muted"
+                    ? "bg-primary "
+                    : "border border-border  hover:bg-muted"
                 }
               `}
                   >
@@ -648,7 +648,7 @@ export default function AdminProducts() {
           border border-border
           px-3 py-2
           text-sm font-medium
-          text-foreground
+         
           transition
           hover:bg-muted
           disabled:cursor-not-allowed
